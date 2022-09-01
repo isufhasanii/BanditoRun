@@ -1,6 +1,6 @@
 package Menu;
 
-import gui.gui;
+import GUI.gui;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,6 @@
-package gui;
+package GUI;
+
+import Movement.Jump;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +21,7 @@ public class gui extends JPanel implements ActionListener {
     int anzahl2 = 0;
     int nx,nx2;
     int left = 0;
+    int figur_y = 235;
 
     public gui(){
         nx = 0;
@@ -31,8 +34,10 @@ public class gui extends JPanel implements ActionListener {
         ImageIcon s = new ImageIcon("C:/Users/agim7/IdeaProjects/BanditoRun/Bilder/bandit.png");
         img2 = s.getImage();
         addKeyListener(new AL());
+        Jump jump = new Jump();
         time = new Timer(5, this);
         time.start();
+
     }
 
     public void paint (Graphics g){
@@ -40,23 +45,23 @@ public class gui extends JPanel implements ActionListener {
         super.paint(g);
         Graphics2D f2 = (Graphics2D) g;
 
-        if (getXBild() == 510 + (anzahl * 2350)){
+        if (getXBild() == 0 + (anzahl*1300)){
             anzahl += 1;
             nx = 0;
         }
 
-        if (getXBild() == 1690+ (anzahl*2350)){
-            anzahl += 1;
+        if(getXBild() == 650 + (anzahl2*1300)){
+            anzahl2 += 1;
             nx2 = 0;
         }
 
-        if (getXBild() >= 510){
-            f2.drawImage(img,685-nx,0,null);
+        if (getXBild() >= 0){
+            f2.drawImage(img,650-nx,0,null);
         }
 
-        f2.drawImage(img,685-nx2,0, null);
+        f2.drawImage(img,650-nx2,0, null);
 
-        f2.drawImage(img2, 30,235,null);
+        f2.drawImage(img2, left,figur_y,null);
 
     }
     public int getXBild(){
@@ -64,17 +69,28 @@ public class gui extends JPanel implements ActionListener {
     }
 
     public void move(){
+        if(walk != -2){
 
-        X_Bild += walk;
-        nx += walk;
-        nx2 += walk;
+            if (left + walk <= 75){
+                left += walk;
 
+            }else {
+                X_Bild += walk;
+                nx += walk;
+                nx2 += walk;
+            }
+        }else {
+            if (left+walk > 0){
+                left += walk;
+            }
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
         move();
+        figur_y = Jump.JumpPosition;
         repaint();
 
     }
@@ -86,7 +102,7 @@ public class gui extends JPanel implements ActionListener {
 
         }
 
-        public void KeyPressed(KeyEvent e){
+        public void keyPressed(KeyEvent e){
 
             key = e.getKeyCode();
 
@@ -95,6 +111,13 @@ public class gui extends JPanel implements ActionListener {
             }
             if (key == KeyEvent.VK_RIGHT){
                 walk = 2;
+            }
+            if (key == KeyEvent.VK_ESCAPE){
+                System.exit(0);
+            }
+            if(key == KeyEvent.VK_SPACE){
+                if (Jump.fertig == true)
+                Jump();
             }
         }
 
@@ -109,5 +132,8 @@ public class gui extends JPanel implements ActionListener {
 
 
     }
-
+    public void Jump(){
+            Jump JumpAnimation = new Jump();
+            JumpAnimation.start();
+    }
 }
